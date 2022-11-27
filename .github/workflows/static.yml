@@ -1,0 +1,75 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy static content *) Launched before pages-build-deployment
+
+# Runs on pushes targeting the default branch
+on:
+  pull_request
+  
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  deployments: write
+  id-token: write
+  issues: write
+  packages: write
+  pages: write
+  pull-requests: write
+  repository-projects: write
+  security-events: write
+  statuses: write
+  
+# Allow one concurrent deploymenta
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build & Deploy job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: |
+          npm run build
+          mv public/ ${{ github.sha }}/
+
+      - name: Git checkout
+        uses: actions/checkout@v3
+        with:
+          ref: github-pages
+          clean: false
+          
+      - name: Git push to Github Pages
+        run: |
+          git config --local user.email "Github-Actions@github.com"
+          git config --local user.name "Github-Actions"
+          git add .
+          git commit -m "${{ github.ref }}" -a
+          git push
+
+      - name: Add comment to pull-request
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'https://${{ github.repository_owner }}.github.io/something/${{ github.sha }}/'
+            })
