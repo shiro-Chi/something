@@ -4,8 +4,8 @@
     "es2021": true
   },
   "ignorePatterns": [
+    "PR/**/*",
     "public/**/*",
-    "main.bundle.js",
     "src/types/**/*",
     "babel.config.js",
     "webpack.common.js",
