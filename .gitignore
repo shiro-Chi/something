@@ -1,0 +1,8 @@
+node_modules
+public/*
+!public/favicon.ico
+!public/logo192.png
+!public/logo512.png
+!public/manifest.json
+!public/robots.txt
+src/types
