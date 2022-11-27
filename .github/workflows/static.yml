@@ -47,7 +47,9 @@ jobs:
       - name: Build
         run: |
           npm run build
-          mkdir PR &>/dev/null
+          if [ ! -d PR ]; then
+            mkdir PR
+          fi
           mv public/ PR/${{ github.sha }}/
 
       - name: Git checkout
