@@ -40,7 +40,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14
-
+      
+      - name: Set artifact name as env variable
+        env:
+          TZ: 'Asia/Tokyo'
+        run: |
+          CURRENT_DATETIME=`date +'%Y-%m-%d-%H-%M-%S'`
+          echo "ARTIFACT_NAME=$(echo $CURRENT_DATETIME)_${{ github.sha }}" >> $GITHUB_ENV
+      
       - name: Install dependencies
         run: npm ci
       
@@ -54,7 +61,7 @@ jobs:
           if [ ! -d PR ]; then
             mkdir PR
           fi
-          mv public/ PR/${{ github.sha }}/
+          mv public/ PR/${{ env.ARTIFACT_NAME }}/
 
       - name: Git checkout
         uses: actions/checkout@v3
@@ -78,5 +85,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'https://${{ github.repository_owner }}.github.io/something/PR/${{ github.sha }}/'
+              body: 'https://${{ github.repository_owner }}.github.io/something/PR/${{ env.ARTIFACT_NAME }}/'
             })
