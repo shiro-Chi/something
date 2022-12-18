@@ -1,5 +1,9 @@
 # Reference
 
+## Stylistic Rules と Code-quality Rules
+
+- [PrettierとESLintのコンフリクトの原因を理解する、解決する](https://zenn.dev/kazuwombat/articles/20e0c0cc83c3f2)
+
 ## Github Actions で GitHub Pages にデプロイ
 
 - [SPAをGithub ActionsでGithub Pagesにデプロイし、プルリクごとに成果物を確認できるようにする](https://miraitranslate-tech.hatenablog.jp/entry/2021/12/24/120000)
